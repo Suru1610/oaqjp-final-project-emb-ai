@@ -28,5 +28,21 @@ def emotion_detector(text_to_analyze):
         headers=headers,
         timeout = 10
     )
+    formatted_response = response.json()
 
-    return response.text
+    # Extracts emotion and their scores
+    prediction = formatted_response['emotionPredictions'][0]['emotion']
+
+    # Find dominant emotion
+    dominant_emotion = max(prediction, key=prediction.get)
+
+    # Final output
+    result = {
+        'anger': prediction['anger'],
+        'disgust': prediction['disgust'],
+        'fear': prediction['fear'],
+        'joy': prediction['joy'],
+        'sadness': prediction['sadness'],
+        'dominant_emotion': dominant_emotion
+    }
+    return result
